@@ -99,12 +99,12 @@ function App() {
       if (status === "success") {
         setChatHistory(prevHistory => [
           ...prevHistory,
-          { sender: "bot", text: `🎉 Deal closed at ₹${counterOffer}! Thank you for negotiating.` }
+          { sender: "bot", text: `Deal closed at ₹${counterOffer}! Thank you for negotiating.` }
         ]);
       } else if (status === "failed") {
         setChatHistory(prevHistory => [
           ...prevHistory,
-          { sender: "bot", text: `❌ Negotiation failed. ${response.data.message}` }
+          { sender: "bot", text: ` ${response.data.message}` }
         ]);
       } else if (status === "final_decision") {
         // Set flag so that final decision buttons are rendered.
