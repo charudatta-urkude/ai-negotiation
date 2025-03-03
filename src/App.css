@@ -1,0 +1,53 @@
+.app-container {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.name-input-container, .product-container, .chat-container {
+  margin-top: 50px;
+}
+
+.input-field {
+  padding: 10px;
+  width: 80%;
+  font-size: 16px;
+}
+
+.primary-button, .negotiate-button, .send-button, .buy-now-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.primary-button { background-color: #007bff; color: white; }
+.buy-now-button { background-color: #28a745; color: white; }
+.negotiate-button { background-color: #ffc107; color: black; }
+.send-button { background-color: #17a2b8; color: white; }
+
+.chat-box {
+  border: 1px solid #ccc;
+  width: 80%;
+  height: 300px;
+  overflow-y: scroll;
+  margin: auto;
+  padding: 10px;
+}
+
+.bot-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 5px auto 5px 10px;
+}
+
+.customer-message {
+  background-color: #cce5ff;
+  color: #004085;
+  padding: 10px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 5px 10px 5px auto;
+}
