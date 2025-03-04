@@ -15,7 +15,7 @@ function App() {
   const BASE_API_URL = "https://negotiation-bot-pgn2.onrender.com";
   const productId = "1";
   const productPrice = 1000;
-  const productImage = "https://via.placeholder.com/300"; // Replace with actual image URL
+  const productImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLkA6qGp_tBvuJ_iZKshCItsuZ3YMKYWvaGQ&s"; // Replace with actual image URL
 
   const handleNameSubmit = () => {
     if (!userName.trim()) {
@@ -99,12 +99,12 @@ function App() {
       if (status === "success") {
         setChatHistory(prevHistory => [
           ...prevHistory,
-          { sender: "bot", text: `🎉 Deal closed at ₹${counterOffer}! Thank you for negotiating.` }
+          { sender: "bot", text: `Deal closed at ₹${counterOffer}! Thank you for negotiating.` }
         ]);
       } else if (status === "failed") {
         setChatHistory(prevHistory => [
           ...prevHistory,
-          { sender: "bot", text: `❌ Negotiation failed. ${response.data.message}` }
+          { sender: "bot", text: ` ${response.data.message}` }
         ]);
       } else if (status === "final_decision") {
         // Set flag so that final decision buttons are rendered.
