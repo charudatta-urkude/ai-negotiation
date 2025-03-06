@@ -59,9 +59,8 @@ input {
   margin: 10px;
   border-radius: 10px;
   border: none;
-  font-size: 16px; /* Added to prevent mobile zooming on input focus */
+  font-size: 16px; /* Ensures mobile zoom issue is resolved */
 }
-
 
 /* Button base style remains unchanged */
 .btn {
@@ -106,13 +105,14 @@ input {
   height: 80vh;                         /* Fixed height for chat window */
   margin: 0 auto;
   border: 1px solid #b3b3b3;            /* Light border */
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);  /* Slight inside shadow for sunken look */
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);  /* Inside shadow for sunken look */
 }
 
 /* 
   Modification 3 (continued): Vertical Stacking of Messages in Chat Box
   - Fixed height and enabled vertical scrolling.
   - Added scroll-behavior for smooth scrolling.
+  - Modification: Added justify-content: flex-end so messages start at the bottom.
 */
 .chat-box {
   width: 100%;
@@ -121,6 +121,7 @@ input {
   margin-bottom: 70px;        /* Extra space at the bottom for the typing bar */
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;  /* Messages are anchored to the bottom */
   scroll-behavior: smooth;    /* Smooth scrolling */
 }
 
@@ -128,7 +129,7 @@ input {
 /* Modification: Updated border-radius to 18px and added subtle box-shadow */
 .chat-box p {
   padding: 10px;
-  border-radius: 18px;         /* Updated to 18px as per requirements */
+  border-radius: 18px;         /* 18px border-radius */
   margin: 5px;
   max-width: 70%;
   word-wrap: break-word;
@@ -161,7 +162,7 @@ input {
   max-width: 70%;
   word-wrap: break-word;
   padding: 10px;
-  border-radius: 18px;        /* Updated to 18px as per requirements */
+  border-radius: 18px;        /* 18px border-radius */
   margin: 5px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);  /* Subtle shadow */
 }
@@ -199,7 +200,7 @@ input {
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
-  background: #0095f6;  /* Instagram blue for the send button */
+  background: #0095f6;  /* Instagram blue for send button */
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -216,9 +217,9 @@ input {
 */
 .final-decision-buttons {
   margin-bottom: 80px;
-  display: flex;             /* Added for horizontal spacing */
+  display: flex;             /* Horizontal spacing */
   justify-content: center;   /* Center buttons horizontally */
-  gap: 20px;                 /* Same spacing as .button-group */
+  gap: 20px;                 /* Spacing similar to .button-group */
 }
 
 /* 
@@ -251,10 +252,10 @@ input {
 
 /* 
   Modification 10: Mobile Optimization
-  - Added media queries to adjust the layout for mobile devices.
+  - Adjust layout for mobile devices.
 */
 @media (max-width: 768px) {
-  /* Adjust chat container to use a percentage width and reduced height on mobile */
+  /* Adjust chat container to use percentage width and reduced height */
   .chat-container {
     width: 90%;
     height: 70vh;
@@ -267,6 +268,14 @@ input {
   /* Adjust the typing bar width */
   .typing-bar {
     width: 95%;
+    /* Mobile-specific: Fix typing bar to bottom so it moves with keypad */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    padding: 10px;
+    background-color: #1e1d1d;  /* Same as chat container background for consistency */
+    z-index: 10; /* Ensure it's above the chat box */
   }
   /* Reduce button group and final decision button gap */
   .button-group, .final-decision-buttons {
