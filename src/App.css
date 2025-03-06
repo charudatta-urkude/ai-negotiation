@@ -42,7 +42,6 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* Removed absolute positioning properties */
   text-align: center;
   margin: 0 auto; /* Centers horizontally */
 }
@@ -90,16 +89,19 @@ input {
 }
 
 /* 
-  Modification 3: Chat Window Background and Layout
+  Modification 3: Chat Window Background and Layout (Desktop)
   - Changed chat-container background to #1e1d1d (near-black) for Instagram dark theme.
   - Fixed the width to 600px so that messages adjust within.
   - Added a light border and an inside shadow for a sunken look.
+  - Set as a flex container with column layout.
 */
 .chat-container {
   background-color: #1e1d1d;            /* Near-black background */
   color: white;
   border-radius: 10px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 600px;                         /* Fixed width */
   height: 80vh;                         /* Fixed height for chat window */
@@ -109,67 +111,66 @@ input {
 }
 
 /* 
-  Modification 3 (continued): Vertical Stacking of Messages in Chat Box
-  - Fixed height and enabled vertical scrolling.
-  - Added scroll-behavior for smooth scrolling.
-  - Messages are anchored to the bottom.
+  Modification 3 (continued): Message Container (Scrollable)
+  - The messages (.chat-box) take up available vertical space.
+  - overflow-y: auto; ensures messages scroll.
+  - Padding-bottom is added to prevent messages from being hidden behind the typing bar.
 */
 .chat-box {
-  width: 100%;
-  height: calc(80vh - 80px);  /* Fixed height based on chat-container minus space for the typing bar */
+  flex: 1;                            /* Takes all available vertical space */
   overflow-y: auto;
-  margin-bottom: 70px;        /* Extra space at the bottom for the typing bar */
+  padding-bottom: 60px;               /* Reserve space equal to the typing bar height */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;  /* Messages start at the bottom and grow upward */
-  scroll-behavior: smooth;    /* Smooth scrolling */
+  justify-content: flex-end;          /* Messages start at the bottom and grow upward */
+  scroll-behavior: smooth;            /* Smooth scrolling */
 }
 
 /* General message bubble styling updated for Instagram theme */
-/* Modification: Updated border-radius to 18px and added subtle box-shadow */
+/* Modification: Updated border-radius to 18px, max-width to 75% for responsiveness, and added subtle box-shadow */
 .chat-box p {
   padding: 10px;
-  border-radius: 18px;         /* 18px border-radius */
+  border-radius: 18px;                /* 18px border-radius */
   margin: 5px;
-  max-width: 70%;
+  max-width: 75%;                     /* Adaptable to different screen sizes */
   word-wrap: break-word;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);  /* Subtle shadow */
 }
 
 /* 
-  Modification 6: AI Response Bubble (bot-message) updated for Instagram dark theme.
-  - Background color set to #262626 (dark gray) and text color to white.
-  - Aligned to left.
+  Modification 6: AI Response Bubble
+  - Background set to #262626 (dark gray) and text color to white.
+  - Aligned to the left.
 */
 .bot-message {
-  background-color: #262626;  /* Dark gray for AI response */
-  color: #ffffff;             /* White text */
+  background-color: #262626;          /* Dark gray for AI response */
+  color: #ffffff;                     /* White text */
   align-self: flex-start;
   text-align: left;
-  /* Inherits border-radius and shadow from .chat-box p */
 }
 
 /* 
-  Modification 4: Customer Message Bubble updated for Instagram dark theme.
-  - Background color set to #d031de (Instagram blue) and text color to white.
-  - Aligned to right.
+  Modification 4: Customer Message Bubble
+  - Background set to #d031de (Instagram blue variant) and text color to white.
+  - Aligned to the right.
 */
 .customer-message {
-  background-color: #d031de;  /* Instagram blue for sent messages */
-  color: #ffffff;             /* White text */
+  background-color: #d031de;          /* Instagram blue (or purple variant) for sent messages */
+  color: #ffffff;                     /* White text */
   align-self: flex-end;
   text-align: right;
-  max-width: 70%;
+  max-width: 75%;
   word-wrap: break-word;
   padding: 10px;
-  border-radius: 18px;        /* 18px border-radius */
+  border-radius: 18px;
   margin: 5px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);  /* Subtle shadow */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 /* 
-  Modification 4 (continued): Typing Bar Inside Chat Window updated for Instagram dark theme.
-  - Input background set to #1e1e1e (slightly lighter black).
+  Modification 4 (continued): Typing Bar
+  - Positioned at the bottom of the chat window.
+  - Uses a subtle transition for smooth UI changes.
 */
 .typing-bar {
   position: absolute;
@@ -181,6 +182,7 @@ input {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  transition: all 0.3s ease-in-out;
 }
 
 .typing-bar input {
@@ -188,47 +190,45 @@ input {
   padding: 10px;
   border-radius: 10px;
   border: none;
-  background-color: #1e1e1e;  /* Slightly lighter black for input */
-  color: #ffffff;             /* White text */
+  background-color: #1e1e1e;          /* Slightly lighter black for input */
+  color: #ffffff;
 }
 
 /* 
-  Modification 3: Updated Send Button for Instagram dark theme.
+  Modification 3: Updated Send Button 
   - Background set to #0095f6 (Instagram blue) for the send button.
 */
 .typing-bar button {
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
-  background: #0095f6;  /* Instagram blue for send button */
+  background: #0095f6;                /* Instagram blue for send button */
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .typing-bar button:hover {
-  background: #007acc;  /* Slightly darker blue on hover */
+  background: #007acc;                /* Slightly darker blue on hover */
 }
 
 /* 
-  Modification 3 (continued): Fix overlap of "Deal" and "No Deal" buttons with the typing bar.
-  - Added extra bottom margin to ensure these buttons are not overlapped.
-  - Modification 7: Added spacing between "Deal" and "No Deal" buttons similar to .button-group.
+  Modification 3 (continued): Final decision buttons
 */
 .final-decision-buttons {
   margin-bottom: 80px;
-  display: flex;             /* Horizontal spacing */
-  justify-content: center;   /* Center buttons horizontally */
-  gap: 20px;                 /* Spacing similar to .button-group */
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 /* 
-  Modification 8: Updated Deal and No Deal Buttons for Instagram dark theme.
+  Modification 8: Deal and No Deal Buttons
   - Background set to #262626 (dark gray) for the buttons.
 */
 .deal-button, .no-deal-button {
-  background: #262626;       /* Dark gray background */
-  color: white;              /* White text */
+  background: #262626;
+  color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 12px;
@@ -237,25 +237,23 @@ input {
 }
 
 .deal-button:hover, .no-deal-button:hover {
-  background: #1f1f1f;       /* Slightly darker grey on hover */
+  background: #1f1f1f;
 }
 
 /* 
   Modification 9: Time Stamp Styling (if used)
-  - Added styling for time stamps with gray color.
 */
 .timestamp {
-  color: #b3b3b3;           /* Gray color for time stamp */
+  color: #b3b3b3;
   font-size: 0.8em;
   margin-top: 2px;
 }
 
 /* 
   Modification 10: Mobile Optimization
-  - Adjust layout for mobile devices so that the chat window occupies the entire mobile screen,
-    except for the fixed typing bar at the bottom.
-  - The chat container is fixed so that only the messages scroll.
-  - The typing bar is fixed at the bottom with no gap to the keypad.
+  - Adjust layout for mobile devices so that the chat window occupies the entire mobile screen (except for the fixed typing bar).
+  - The chat container is fixed so only the messages scroll.
+  - The typing bar is fixed at the bottom with no gap to the keypad, using safe-area insets.
 */
 @media (max-width: 768px) {
   html, body {
@@ -264,7 +262,7 @@ input {
     overflow: hidden;
     height: 100vh;
   }
-  /* Fix the chat container to occupy the full mobile screen (except for the typing bar) */
+  /* Make the chat container occupy full mobile screen (except typing bar) */
   .chat-container {
     position: fixed;
     top: 0;
@@ -273,30 +271,39 @@ input {
     height: calc(100vh - 60px);  /* Full viewport height minus typing bar height (assumed 60px) */
     padding: 10px;
     margin: 0;
-    overflow: hidden; /* Prevent overall page scroll */
+    overflow: hidden;
     border-radius: 0;
     box-shadow: none;
+    display: flex;
+    flex-direction: column;
   }
-  /* Adjust chat box height accordingly */
+  /* Adjust chat-box to fill available space with padding-bottom for the typing bar */
   .chat-box {
-    height: calc(100vh - 60px - 20px); /* Container height minus typing bar height and padding */
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 60px;  /* Equal to the typing bar height */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    scroll-behavior: smooth;
   }
-  /* Fix the typing bar at the bottom with no gap */
+  /* Fix the typing bar at the bottom with safe-area inset handling */
   .typing-bar {
     position: fixed;
-    bottom: 0;
+    bottom: calc(0px + env(safe-area-inset-bottom));
     left: 0;
     width: 100%;
     padding: 10px;
-    background-color: #1e1d1d;  /* Same as chat container background for consistency */
+    background-color: #1e1d1d;
     z-index: 10;
     box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
   }
-  /* Reduce button group and final decision button gap */
+  /* Reduce gaps for mobile */
   .button-group, .final-decision-buttons {
     gap: 10px;
   }
-  /* Adjust font sizes for headings and paragraphs */
+  /* Adjust font sizes for mobile */
   h1 {
     font-size: 1.5em;
   }
