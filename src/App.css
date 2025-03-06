@@ -33,7 +33,7 @@ p {
 /* 
   Modification 1: Adjust Centering for Containers
   Removed absolute positioning for .landing-container and .chat-container so they flow naturally,
-  ensuring the welcome page and chat window center correctly.
+  ensuring the welcome page and negotiation page center correctly.
 */
 .landing-container,
 .product-container,
@@ -42,12 +42,11 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* Removed absolute positioning properties */
   text-align: center;
   margin: 0 auto; /* Centers horizontally */
 }
 
-/* Modification 1 (continued): Use min-height for vertical centering of welcome and chat pages */
+/* Modification 1 (continued): Use min-height for vertical centering of welcome and negotiation pages */
 .landing-container,
 .chat-container {
   min-height: 80vh;
@@ -90,46 +89,42 @@ input {
 }
 
 /* 
-  Modification 3: Chat Window Background and Layout
-  - Changed chat-container background to #1e1d1d (near-black) for Instagram dark theme.
-  - Fixed the width to 600px so that messages adjust within.
-  - Added a light border and an inside shadow for a sunken look.
+  Modification 3 (Revised): Remove the Chat Window Container
+  Instead of a fixed, bordered chat window, the negotiation page background is set to Instagram black,
+  and the bubbles appear directly on it.
 */
 .chat-container {
-  background-color: #1e1d1d;            /* Near-black background */
+  background-color: #000000;      /* Instagram black background */
   color: white;
-  border-radius: 10px;
+  /* Removed border, border-radius, and box-shadow to eliminate the window look */
   padding: 20px;
   position: relative;
-  width: 600px;                         /* Fixed width */
-  height: 80vh;                         /* Fixed height for chat window */
-  margin: 0 auto;
-  border: 1px solid #b3b3b3;            /* Light border */
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);  /* Inside shadow for sunken look */
+  width: 100%;                    /* Full width */
+  height: 100vh;                  /* Full viewport height */
+  margin: 0;                      /* Remove extra margin */
 }
 
 /* 
-  Modification 3 (continued): Vertical Stacking of Messages in Chat Box
-  - Fixed height and enabled vertical scrolling.
-  - Added scroll-behavior for smooth scrolling.
-  - Modification: Added justify-content: flex-end so messages start at the bottom.
+  Modification 3 (continued): Adjust Chat Box
+  Now that there's no separate window, set the chat box to fill the container.
+  Updated height to use full viewport height minus space for the typing bar.
 */
 .chat-box {
   width: 100%;
-  height: calc(80vh - 80px);  /* Fixed height based on chat-container minus space for the typing bar */
+  height: calc(100vh - 80px);     /* Adjusted height based on full viewport */
   overflow-y: auto;
-  margin-bottom: 70px;        /* Extra space at the bottom for the typing bar */
+  margin-bottom: 70px;            /* Extra space at the bottom for the typing bar */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;  /* Messages are anchored to the bottom */
-  scroll-behavior: smooth;    /* Smooth scrolling */
+  justify-content: flex-end;      /* Messages appear from the bottom and scroll upward */
+  scroll-behavior: smooth;        /* Smooth scrolling */
 }
 
 /* General message bubble styling updated for Instagram theme */
 /* Modification: Updated border-radius to 18px and added subtle box-shadow */
 .chat-box p {
   padding: 10px;
-  border-radius: 18px;         /* 18px border-radius */
+  border-radius: 18px;            /* 18px border-radius */
   margin: 5px;
   max-width: 70%;
   word-wrap: break-word;
@@ -168,7 +163,7 @@ input {
 }
 
 /* 
-  Modification 4 (continued): Typing Bar Inside Chat Window updated for Instagram dark theme.
+  Modification 4 (continued): Typing Bar Inside Negotiation Page updated for Instagram dark theme.
   - Input background set to #1e1e1e (slightly lighter black).
 */
 .typing-bar {
@@ -200,14 +195,14 @@ input {
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
-  background: #0095f6;  /* Instagram blue for send button */
+  background: #0095f6;        /* Instagram blue for the send button */
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .typing-bar button:hover {
-  background: #007acc;  /* Slightly darker blue on hover */
+  background: #007acc;        /* Slightly darker blue on hover */
 }
 
 /* 
@@ -217,9 +212,9 @@ input {
 */
 .final-decision-buttons {
   margin-bottom: 80px;
-  display: flex;             /* Horizontal spacing */
-  justify-content: center;   /* Center buttons horizontally */
-  gap: 20px;                 /* Spacing similar to .button-group */
+  display: flex;                /* Horizontal spacing */
+  justify-content: center;      /* Center buttons horizontally */
+  gap: 20px;                    /* Spacing similar to .button-group */
 }
 
 /* 
@@ -227,8 +222,8 @@ input {
   - Background set to #262626 (dark gray) for the buttons.
 */
 .deal-button, .no-deal-button {
-  background: #262626;       /* Dark gray background */
-  color: white;              /* White text */
+  background: #262626;          /* Dark gray background */
+  color: white;                 /* White text */
   border: none;
   padding: 10px 20px;
   border-radius: 12px;
@@ -237,7 +232,7 @@ input {
 }
 
 .deal-button:hover, .no-deal-button:hover {
-  background: #1f1f1f;       /* Slightly darker grey on hover */
+  background: #1f1f1f;          /* Slightly darker grey on hover */
 }
 
 /* 
@@ -245,7 +240,7 @@ input {
   - Added styling for time stamps with gray color.
 */
 .timestamp {
-  color: #b3b3b3;           /* Gray color for time stamp */
+  color: #b3b3b3;              /* Gray color for time stamp */
   font-size: 0.8em;
   margin-top: 2px;
 }
@@ -255,27 +250,27 @@ input {
   - Adjust layout for mobile devices.
 */
 @media (max-width: 768px) {
-  /* Adjust chat container to use percentage width and reduced height */
+  /* Adjust chat container to use full width and full height on mobile */
   .chat-container {
-    width: 90%;
-    height: 70vh;
+    width: 100%;
+    height: 100vh;
     padding: 10px;
   }
   /* Adjust chat box height accordingly */
   .chat-box {
-    height: calc(70vh - 80px);
+    height: calc(100vh - 80px);
   }
   /* Adjust the typing bar width */
   .typing-bar {
     width: 95%;
-    /* Mobile-specific: Fix typing bar to bottom so it moves with keypad */
+    /* Fix typing bar to bottom so it moves with keypad */
     position: fixed;
     bottom: 0;
     left: 0;
     transform: none;
     padding: 10px;
-    background-color: #1e1d1d;  /* Same as chat container background for consistency */
-    z-index: 10; /* Ensure it's above the chat box */
+    background-color: #000000;  /* Match negotiation page background */
+    z-index: 10; /* Ensure it's above the chat bubbles */
   }
   /* Reduce button group and final decision button gap */
   .button-group, .final-decision-buttons {
