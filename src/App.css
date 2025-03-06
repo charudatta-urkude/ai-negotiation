@@ -86,8 +86,7 @@ input {
 
 /* 
   Modification 3: Chat Container Background and Layout for Desktop
-  - Desktop chat container has fixed width (600px) with a near-black background,
-    light border, and inside shadow for a sunken look.
+  - Fixed width (600px) with near-black background, light border, and inside shadow.
 */
 .chat-container {
   background-color: #1e1d1d;            /* Near-black background */
@@ -104,7 +103,7 @@ input {
 
 /* 
   Modification 3 (continued): Chat Box (messages area)
-  - Only the chat-box scrolls; messages are anchored at the bottom.
+  - Only messages scroll; they’re anchored at the bottom.
 */
 .chat-box {
   width: 100%;
@@ -120,14 +119,18 @@ input {
 /* Message Bubble Styling */
 .chat-box p {
   padding: 10px;
-  border-radius: 18px;         /* Rounded corners as per requirements */
+  border-radius: 18px;         /* 18px border-radius */
   margin: 5px;
   max-width: 70%;
   word-wrap: break-word;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);  /* Subtle shadow */
 }
 
-/* AI Response Bubble */
+/* 
+  Modification 6: AI Response Bubble
+  - Background color set to dark gray (#262626) and text to white.
+  - Aligned left.
+*/
 .bot-message {
   background-color: #262626;  /* Dark gray for AI response */
   color: #ffffff;             /* White text */
@@ -135,9 +138,13 @@ input {
   text-align: left;
 }
 
-/* Customer Message Bubble */
+/* 
+  Modification 4: Customer Message Bubble
+  - Background color set to Instagram blue (#d031de) and text to white.
+  - Aligned right.
+*/
 .customer-message {
-  background-color: #d031de;  /* Instagram blue for sent messages (adjust as needed) */
+  background-color: #d031de;  /* Instagram blue for sent messages */
   color: #ffffff;             /* White text */
   align-self: flex-end;
   text-align: right;
@@ -150,8 +157,8 @@ input {
 }
 
 /* 
-  Typing Bar (Desktop)
-  - Positioned at the bottom inside the chat container.
+  Modification 4 (continued): Typing Bar Inside Chat Container
+  - Input background set to slightly lighter black (#1e1e1e).
 */
 .typing-bar {
   position: absolute;
@@ -215,12 +222,12 @@ input {
 /* 
   Modification 10: Mobile Optimization
   - Extend chat container to occupy entire mobile screen.
-  - Fix container so that only the chat-box scrolls.
-  - Remove any gap between the typing bar and the keypad.
-  - Ensure the layout remains stable.
+  - Fix layout so that only messages scroll.
+  - Remove any gap between the typing bar and keypad.
+  - Ensure the send button stays within bounds.
 */
 @media (max-width: 768px) {
-  /* Chat container: full-screen and fixed */
+  /* Make chat container full-screen and fixed */
   .chat-container {
     position: fixed;
     top: 0;
@@ -233,13 +240,15 @@ input {
     background-color: #1e1d1d;
     margin: 0;
   }
-  /* Chat box: occupy available space minus the typing bar */
+  /* Ensure the chat-box occupies available space and reserves space for the typing bar */
   .chat-box {
-    height: calc(100vh - 60px);  /* Adjusted height for typing bar */
+    height: calc(100vh - 60px);  /* Adjust height for fixed typing bar */
     margin-bottom: 0;
     justify-content: flex-end;
+    padding-bottom: 60px;  /* Added padding-bottom so messages don't go under typing bar */
+    box-sizing: border-box;
   }
-  /* Typing bar: fixed at bottom with no gap */
+  /* Fix the typing bar to the bottom with no gap */
   .typing-bar {
     position: fixed;
     bottom: 0;
@@ -249,6 +258,11 @@ input {
     background-color: #1e1d1d;
     z-index: 10;
     transform: none;
+  }
+  /* Constrain the send button so it doesn't overflow */
+  .typing-bar button {
+    max-width: 80px;
+    flex-shrink: 0;
   }
   /* Adjust font sizes for mobile */
   h1 {
