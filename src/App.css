@@ -258,6 +258,12 @@ input {
   - The typing bar is fixed at the bottom with no gap to the keypad.
 */
 @media (max-width: 768px) {
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+  }
   /* Fix the chat container to occupy the full mobile screen (except for the typing bar) */
   .chat-container {
     position: fixed;
@@ -268,6 +274,8 @@ input {
     padding: 10px;
     margin: 0;
     overflow: hidden; /* Prevent overall page scroll */
+    border-radius: 0;
+    box-shadow: none;
   }
   /* Adjust chat box height accordingly */
   .chat-box {
