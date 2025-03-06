@@ -90,8 +90,8 @@ input {
 
 /* 
   Modification 3: Chat Window Background and Layout
-  - Changed chat-container background to #121212 (near-black) for Instagram dark theme.
-  - Fixed the width to 600px.
+  - Changed chat-container background to #1e1d1d (near-black) for Instagram dark theme.
+  - Fixed the width to 600px so that messages adjust within.
   - Added a light border and an inside shadow for a sunken look.
 */
 .chat-container {
@@ -148,7 +148,7 @@ input {
 
 /* 
   Modification 4: Customer Message Bubble updated for Instagram dark theme.
-  - Background color set to #007aff (Instagram blue) and text color to white.
+  - Background color set to #d031de (Instagram blue) and text color to white.
   - Aligned to right.
 */
 .customer-message {
@@ -237,11 +237,47 @@ input {
   background: #1f1f1f;       /* Slightly darker grey on hover */
 }
 
-.chat-box {
-  scrollbar-width: none;  /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+/* 
+  Modification 9: Time Stamp Styling (if used)
+  - Added styling for time stamps with gray color.
+*/
+.timestamp {
+  color: #b3b3b3;           /* Gray color for time stamp */
+  font-size: 0.8em;
+  margin-top: 2px;
 }
 
-.chat-box::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, and Opera */
+/* 
+  Modification 10: Mobile Optimization
+  - Added media queries to adjust the layout for mobile devices.
+*/
+@media (max-width: 768px) {
+  /* Adjust chat container to use a percentage width and reduced height on mobile */
+  .chat-container {
+    width: 90%;
+    height: 70vh;
+    padding: 10px;
+  }
+  /* Adjust chat box height accordingly */
+  .chat-box {
+    height: calc(70vh - 80px);
+  }
+  /* Adjust the typing bar width */
+  .typing-bar {
+    width: 95%;
+  }
+  /* Reduce button group and final decision button gap */
+  .button-group, .final-decision-buttons {
+    gap: 10px;
+  }
+  /* Adjust font sizes for headings and paragraphs */
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.2em;
+  }
+  p {
+    font-size: 0.9em;
+  }
 }
