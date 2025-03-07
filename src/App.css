@@ -301,23 +301,14 @@ button:focus,
     padding: 12px 24px;
   }
 
-  /* The chat container can just fill the width and remain stable */
   .chat-container {
     width: 100%;
-    /* Remove or avoid position: static/absolute/fixed that ties it to bottom */
-    position: relative; 
+    position: static;
     bottom: auto;
     right: auto;
-    height: auto; /* let it size to content or a set height, as desired */
   }
 
-  /* If you have a .typing-bar-fixed class for the bar, ensure it's pinned at bottom */
-  .typing-bar-fixed {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 999; /* so it stays above .chat-container */
+  .chat-popup {
+    padding: 10px;
   }
 }
-
