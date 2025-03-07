@@ -1,179 +1,159 @@
-/* Global Styles */
-body, html {
+/* Base styles (Mobile-First) */
+
+body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
-  background-color: #121212;
-  color: #ffffff;
-  height: 100%;
-  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
 }
 
-/* Container for the entire app */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* Name Input Page */
-.name-input-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 20px;
-  text-align: center;
-  background-color: #121212;
 }
 
-/* Product Page */
-.product-container {
-  text-align: center;
+/* Containers for each page */
+.name-input-container,
+.product-container,
+.chat-container {
+  background: #fff;
   padding: 20px;
-  background-color: #121212;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.product-image {
+h1 {
+  margin-top: 0;
+}
+
+/* Input Field Styles */
+.input-field {
   width: 100%;
-  max-width: 300px;
-  height: auto;
-  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-.button-group {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
+/* Button Styles */
+.primary-button,
 .buy-now-button,
 .negotiate-button,
-.primary-button,
+.send-button,
 .deal-button,
-.no-deal-button,
-.send-button {
-  background-color: #0095f6;
-  border: none;
-  color: #ffffff;
+.no-deal-button {
   padding: 10px 20px;
-  border-radius: 18px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: #fff;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s;
 }
 
+.primary-button:hover,
 .buy-now-button:hover,
 .negotiate-button:hover,
-.primary-button:hover,
+.send-button:hover,
 .deal-button:hover,
-.no-deal-button:hover,
-.send-button:hover {
-  background-color: #007acc;
+.no-deal-button:hover {
+  background: #0056b3;
 }
 
-/* Chat Page */
-.chat-container {
-  position: relative;
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 0.9em;
+}
+
+/* Product Image */
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Button Group Layout for Product Page */
+.button-group {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #121212;
+  gap: 10px;
+  align-items: center;
 }
 
-/* Chat Box - messages appear starting from the bottom */
+/* Chat Container and Chat Box */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+}
+
 .chat-box {
   flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column-reverse;
   padding: 10px;
-  padding-bottom: 70px; /* Ensure messages aren't hidden behind the typing bar */
+  border: 1px solid #ddd;
+  background: #fafafa;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  overflow-y: auto;
 }
 
-/* Chat Bubble Styles */
-.bot-message, .customer-message {
-  padding: 10px 15px;
-  margin: 5px 0;
-  border-radius: 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  max-width: 75%;
-  word-wrap: break-word;
-}
-
+/* Chat Message Styles */
 .bot-message {
-  background-color: #262626;
-  align-self: flex-start;
+  background: #e1f5fe;
+  color: #0277bd;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 4px;
+  text-align: left;
 }
 
 .customer-message {
-  background-color: #007aff;
-  align-self: flex-end;
+  background: #dcedc8;
+  color: #33691e;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 4px;
+  text-align: right;
 }
 
-/* Typing Bar (Input & Send Button) */
-.typing-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  background-color: #1e1e1e;
-  padding: 10px;
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.3);
-}
-
-.input-field {
-  flex: 1;
-  border: none;
-  padding: 10px;
-  background-color: #1e1e1e;
-  color: #ffffff;
-  font-size: 16px;
-}
-
-.input-field:focus {
-  outline: none;
-}
-
-/* Loading and Error Messages */
+/* Loading Message */
 .loading-message {
-  text-align: center;
-  margin: 10px 0;
-  color: #b3b3b3;
-}
-
-.error-message {
-  color: #ff6b6b;
-  text-align: center;
-  margin-top: 10px;
+  font-style: italic;
+  color: #555;
 }
 
 /* Final Decision Buttons */
 .final-decision-buttons {
   display: flex;
-  justify-content: space-around;
-  margin: 10px;
+  justify-content: center;
+  gap: 20px;
+  margin: 10px 0;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-  .input-field, 
-  .send-button, 
-  .primary-button, 
-  .buy-now-button, 
-  .negotiate-button, 
-  .deal-button, 
-  .no-deal-button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
+/* Typing Bar */
+.typing-bar {
+  display: flex;
+  gap: 10px;
+}
 
-  .chat-box {
-    padding: 8px;
-    padding-bottom: 70px; /* maintain space for the fixed typing bar */
+.typing-bar .input-field {
+  flex: 1;
+}
+
+/* Responsive Styles for Larger Screens */
+@media (min-width: 768px) {
+  .button-group {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .typing-bar {
+    gap: 15px;
   }
 }
