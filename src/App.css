@@ -43,7 +43,7 @@ button:focus,
   max-width: 400px;
   padding: 10px;
   font-size: 16px; /* Already set to 16px to avoid mobile zoom */
-  -webkit-text-size-adjust: 100%; /* Prevent auto zoom on typing in mobile */
+  -webkit-text-size-adjust: 100%; /* Modification: Prevent auto zoom on typing in mobile */
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -124,6 +124,7 @@ button:focus,
 
 /* Chat Window - Desktop */
 .chat-container {
+  /* Modification: Ensure a fixed or suitable position & height so it fits optimally */
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #121212;  /* Updated to near-black */
@@ -146,11 +147,11 @@ button:focus,
   right: 0;
   bottom: 0;
   background-color: #121212;  /* Updated to near-black */
-  padding: 10px 10px 80px;  /* Increased bottom padding to accommodate fixed typing bar */
+  padding: 10px;
   z-index: 1000;
-  display: flex;
+  display: flex; /* Modification: to keep final-decision-buttons & typing-bar at bottom */
   flex-direction: column;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Modification: Prevent horizontal spill of elements */
 }
 
 /* Chat Box */
@@ -169,26 +170,26 @@ button:focus,
 
 /* Chat Messages */
 .bot-message {
-  background-color: #262626;  /* Dark gray */
-  color: #fff;
+  background-color: #262626;  /* Updated to dark gray */
+  color: #fff;                /* Updated for white text */
   padding: 8px 12px;
   border-radius: 15px;
   margin: 5px;
   display: inline-block;
   max-width: 70%;
-  align-self: flex-start;
+  align-self: flex-start; /* AI on the left */
   text-align: left;
 }
 
 .customer-message {
-  background-color: #007aff;  /* Instagram blue */
+  background-color: #007aff;  /* Updated to Instagram blue */
   color: #fff;
   padding: 8px 12px;
   border-radius: 15px;
   margin: 5px;
   display: inline-block;
   max-width: 70%;
-  align-self: flex-end;
+  align-self: flex-end; /* Customer on the right */
   text-align: left;
 }
 
@@ -204,12 +205,12 @@ button:focus,
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
-  border-radius: 500px;  /* Pill shape */
+  border-radius: 500px;  /* Large radius for a pill shape */
   margin: 10px;
 }
 
 .typing-bar .input-field {
-  background-color: transparent;  /* Keeps the current background */
+  background-color: transparent;  /* Updated input background */
   flex: 1;
   border: none;
   outline: none;
@@ -300,24 +301,23 @@ button:focus,
     padding: 12px 24px;
   }
 
+  /* The chat container can just fill the width and remain stable */
   .chat-container {
     width: 100%;
-    position: static;
+    /* Remove or avoid position: static/absolute/fixed that ties it to bottom */
+    position: relative; 
     bottom: auto;
     right: auto;
+    height: auto; /* let it size to content or a set height, as desired */
   }
 
-  /* Fix the typing bar at the bottom of the viewport on mobile */
-  .chat-popup {
-    padding: 10px 10px 80px; /* Ensure bottom padding so messages aren’t hidden */
-  }
-
-  .typing-bar {
+  /* If you have a .typing-bar-fixed class for the bar, ensure it's pinned at bottom */
+  .typing-bar-fixed {
     position: fixed;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    margin: 0;
-    z-index: 1100;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999; /* so it stays above .chat-container */
   }
 }
+
