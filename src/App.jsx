@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"; // Modification 4: Added useEffect and useRef
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./App.css";
 
@@ -10,16 +10,25 @@ function App() {
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [finalDecision, setFinalDecision] = useState(false); // Flag to show final decision buttons
+  const [finalDecision, setFinalDecision] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [showChat, setShowChat] = useState(false);
 
   const BASE_API_URL = "https://negotiation-bot-pgn2.onrender.com";
   const productId = "1";
   const productPrice = 1000;
-  const productImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLkA6qGp_tBvuJ_iZKshCItsuZ3YMKYWvaGQ&s"; // Replace with actual image URL
+  const productImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLkA6qGp_tBvuJ_iZKshCItsuZ3YMKYWvaGQ&s";
 
-  const chatBoxRef = useRef(null); // Modification 4: Create a ref for the chat container
+  const chatBoxRef = useRef(null);
 
-  // Modification 4: Auto-scroll effect – scroll to the bottom whenever chatHistory changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
@@ -46,7 +55,11 @@ function App() {
       setChatHistory([
         { sender: "bot", text: "Welcome to negotiation! Please enter your offer." }
       ]);
-      setPage("negotiationPage");
+      if (isMobile) {
+        setPage("negotiationPage");
+      } else {
+        setShowChat(true);
+      }
     } catch (err) {
       setError("Failed to start negotiation. Please try again.");
     } finally {
@@ -54,22 +67,18 @@ function App() {
     }
   };
 
-  // Function to handle final decision (Deal/No Deal)
   const handleFinalDecision = async (decision) => {
     setLoading(true);
     try {
-      // Send the decision along with a dummy message (backend uses the decision field)
       const response = await axios.post(`${BASE_API_URL}/negotiate`, {
         session_id: sessionId,
-        customer_message: "final decision", // Dummy text; backend uses the decision field
+        customer_message: "final decision",
         decision: decision
       });
-      // Append the final decision response message to chat history.
       setChatHistory(prevHistory => [
         ...prevHistory,
         { sender: "bot", text: response.data.human_response }
       ]);
-      // Reset final decision flag.
       setFinalDecision(false);
     } catch (err) {
       setError("Failed to submit your decision. Please try again.");
@@ -83,16 +92,18 @@ function App() {
       setError("Please enter your offer.");
       return;
     }
-    // Add customer's message
+    
     setChatHistory(prevHistory => [
       ...prevHistory,
       { sender: "customer", text: customerMessage }
     ]);
-    // Save current message in a variable for sending
     const currentMessage = customerMessage;
     setCustomerMessage("");
-    
-    // Removed temporary "Generating counter offer..." message code
+
+    setChatHistory(prevHistory => [
+      ...prevHistory,
+      { sender: "bot", text: "", isLoading: true }
+    ]);
 
     setLoading(true);
     
@@ -103,33 +114,32 @@ function App() {
       });
       const botMessage = response.data.human_response;
       const status = response.data.status;
-      
-      // Directly add the bot response
-      setChatHistory(prevHistory => [
-        ...prevHistory,
-        { sender: "bot", text: botMessage }
-      ]);
-      
-      if (status === "success") {
-        setChatHistory(prevHistory => [
-          ...prevHistory,
-          { sender: "bot", text: `Deal closed at ₹${response.data.counter_offer}! Thank you for negotiating.` }
-        ]);
-      } else if (status === "failed") {
-        setChatHistory(prevHistory => [
-          ...prevHistory,
-          { sender: "bot", text: ` ${response.data.message}` }
-        ]);
-      } else if (status === "final_decision") {
-        // Set flag so that final decision buttons are rendered.
-        setFinalDecision(true);
-        setChatHistory(prevHistory => [
-          ...prevHistory,
-          { sender: "bot", text: response.data.message }
-        ]);
-      }
+
+      setChatHistory(prevHistory => {
+        let newHistory = [...prevHistory];
+        if (newHistory.length > 0 && newHistory[newHistory.length - 1].isLoading) {
+          newHistory.pop();
+        }
+        newHistory.push({ sender: "bot", text: botMessage });
+        if (status === "success") {
+          newHistory.push({ sender: "bot", text: `Deal closed at ₹${response.data.counter_offer}! Thank you for negotiating.` });
+        } else if (status === "failed") {
+          newHistory.push({ sender: "bot", text: response.data.message });
+        } else if (status === "final_decision") {
+          setFinalDecision(true);
+          newHistory.push({ sender: "bot", text: response.data.message });
+        }
+        return newHistory;
+      });
     } catch (err) {
       setError("Failed to process negotiation. Please try again.");
+      setChatHistory(prevHistory => {
+        let newHistory = [...prevHistory];
+        if (newHistory.length > 0 && newHistory[newHistory.length - 1].isLoading) {
+          newHistory.pop();
+        }
+        return newHistory;
+      });
     } finally {
       setLoading(false);
     }
@@ -158,29 +168,78 @@ function App() {
           <h1>Product Page</h1>
           <img src={productImage} alt="Product" className="product-image" />
           <h2>Price: ₹{productPrice}</h2>
-          {/* Modification: Wrap buttons in a container with class "button-group" */}
           <div className="button-group">
             <button className="buy-now-button">Buy Now</button>
             <button onClick={handleNegotiate} className="negotiate-button">
-              {loading ? "Starting Negotiation..." : "Negotiate"}
+              Negotiate
             </button>
           </div>
           {error && <p className="error-message">{error}</p>}
+          {showChat && !isMobile && (
+            /* Modification: Reordered to place finalDecision buttons above typing bar,
+               with messages at the bottom, and typed input fixed at the bottom. */
+            <div className="chat-container">
+              <div className="chat-box" ref={chatBoxRef}>
+                {chatHistory.map((message, index) => (
+                  <p key={index} className={message.sender === "bot" ? "bot-message" : "customer-message"}>
+                    {message.isLoading ? (
+                      <div className="dots">
+                        <span className="dot dot1"></span>
+                        <span className="dot dot2"></span>
+                        <span className="dot dot3"></span>
+                      </div>
+                    ) : (
+                      message.text
+                    )}
+                  </p>
+                ))}
+              </div>
+              {finalDecision && (
+                <div className="final-decision-buttons">
+                  <button onClick={() => handleFinalDecision("deal")} className="deal-button" disabled={loading}>
+                    Deal
+                  </button>
+                  <button onClick={() => handleFinalDecision("no_deal")} className="no-deal-button" disabled={loading}>
+                    No Deal
+                  </button>
+                </div>
+              )}
+              <div className="typing-bar">
+                <input 
+                  type="text"
+                  value={customerMessage}
+                  onChange={(e) => setCustomerMessage(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { handleSendMessage(); } }}
+                  placeholder="Enter your offer..."
+                  className="input-field"
+                />
+                <button onClick={handleSendMessage} className="send-button" disabled={loading}>
+                  ➤
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {page === "negotiationPage" && (
-        <div className="chat-container">
-          {/* Modification 2: Removed the "Negotiation Chat" title */}
+      {page === "negotiationPage" && isMobile && (
+        /* Modification: Same reordering for mobile popup */
+        <div className="chat-popup">
           <div className="chat-box" ref={chatBoxRef}>
             {chatHistory.map((message, index) => (
-              // Modification 3: Add fade-in animation class "fade-in" to each message element
-              <p key={index} className={`${message.sender === "bot" ? "bot-message" : "customer-message"} fade-in`}>
-                {message.text}
+              <p key={index} className={message.sender === "bot" ? "bot-message" : "customer-message"}>
+                {message.isLoading ? (
+                  <div className="dots">
+                    <span className="dot dot1"></span>
+                    <span className="dot dot2"></span>
+                    <span className="dot dot3"></span>
+                  </div>
+                ) : (
+                  message.text
+                )}
               </p>
             ))}
           </div>
-          {/* Render final decision buttons when applicable */}
           {finalDecision && (
             <div className="final-decision-buttons">
               <button onClick={() => handleFinalDecision("deal")} className="deal-button" disabled={loading}>
@@ -191,18 +250,17 @@ function App() {
               </button>
             </div>
           )}
-          {/* Modification 4 (continued): Wrap the input and send button in a container with class "typing-bar" and add onKeyPress for Enter */}
           <div className="typing-bar">
             <input 
               type="text"
               value={customerMessage}
               onChange={(e) => setCustomerMessage(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") { handleSendMessage(); } }}
               placeholder="Enter your offer..."
               className="input-field"
-              onKeyPress={(e) => { if(e.key === "Enter") { handleSendMessage(); } }} // Send on Enter
             />
             <button onClick={handleSendMessage} className="send-button" disabled={loading}>
-              {loading ? "Processing..." : "Send"}
+              ➤
             </button>
           </div>
           {error && <p className="error-message">{error}</p>}
