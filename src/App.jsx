@@ -122,7 +122,6 @@ function App() {
         if (newHistory.length > 0 && newHistory[newHistory.length - 1].isLoading) {
           newHistory.pop();
         }
-        newHistory.push({ sender: "bot", text: botMessage });
         if (status === "success") {
           newHistory.push({ sender: "bot", text: `Deal closed at ₹${response.data.counter_offer}! Thank you for negotiating.` });
         } else if (status === "failed") {
@@ -130,6 +129,10 @@ function App() {
         } else if (status === "final_decision") {
           setFinalDecision(true);
           newHistory.push({ sender: "bot", text: response.data.message });
+        } else if (status === "invalid_offer") {  // Newly added branch for invalid_offer
+          newHistory.push({ sender: "bot", text: response.data.message });
+        } else {
+          newHistory.push({ sender: "bot", text: botMessage });
         }
         return newHistory;
       });
@@ -178,8 +181,6 @@ function App() {
           </div>
           {error && <p className="error-message">{error}</p>}
           {showChat && !isMobile && (
-            /* Modification: Reordered to place finalDecision buttons above typing bar,
-               with messages at the bottom, and typed input fixed at the bottom. */
             <div className="chat-container">
               <div className="chat-box" ref={chatBoxRef}>
                 {chatHistory.map((message, index) => (
@@ -225,8 +226,8 @@ function App() {
       )}
 
       {page === "negotiationPage" && isMobile && (
-        /* Modification: Same reordering for mobile popup */
         <div className="chat-popup">
+          <div className="close-button" onClick={() => setShowChat(false)}>X</div>
           <div className="chat-box" ref={chatBoxRef}>
             {chatHistory.map((message, index) => (
               <p key={index} className={message.sender === "bot" ? "bot-message" : "customer-message"}>
